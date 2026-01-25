@@ -6,7 +6,8 @@ import {
   AlertTriangle, 
   Clock, 
   FileText,
-  Terminal
+  Terminal,
+  BookOpen
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -21,6 +22,7 @@ const navItems = [
   { id: 'logs', label: 'Log Analysis', icon: AlertTriangle },
   { id: 'timeline', label: 'Timeline', icon: Clock },
   { id: 'report', label: 'Report', icon: FileText },
+  { id: 'guide', label: 'How to Use', icon: BookOpen },
 ];
 
 export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
