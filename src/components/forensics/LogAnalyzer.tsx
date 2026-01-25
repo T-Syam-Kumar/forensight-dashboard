@@ -1,4 +1,4 @@
-import { AlertTriangle, FileText, Search, AlertCircle, Info, Loader2 } from 'lucide-react';
+import { AlertTriangle, FileText, Search, AlertCircle, Info, Loader2, Download } from 'lucide-react';
 import { FileEvidence, LogAnalysisResult } from '@/types/forensics';
 import { getSeverityColor, getSeverityBg } from '@/services/logAnalysisService';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,44 @@ interface LogAnalyzerProps {
   evidenceFiles: FileEvidence[];
   logAnalysis: LogAnalysisResult | null;
   onAnalyze: (evidence: FileEvidence) => Promise<LogAnalysisResult>;
+}
+
+const SAMPLE_LOG_CONTENT = `2024-01-15 08:23:15 INFO System startup initiated
+2024-01-15 08:23:16 INFO Loading configuration files
+2024-01-15 08:23:17 INFO Database connection established
+2024-01-15 08:24:01 WARNING High memory usage detected: 85%
+2024-01-15 08:25:33 INFO User admin logged in successfully
+2024-01-15 08:26:45 ERROR Failed login attempt for user: guest
+2024-01-15 08:26:46 ERROR Failed login attempt for user: guest
+2024-01-15 08:26:47 CRITICAL Failed login attempt for user: root
+2024-01-15 08:27:12 WARNING Unauthorized access attempt to /admin/config
+2024-01-15 08:28:00 INFO Scheduled backup started
+2024-01-15 08:29:15 ERROR Connection denied from IP: 192.168.1.105
+2024-01-15 08:30:22 CRITICAL Unauthorized modification attempt on system files
+2024-01-15 08:31:00 INFO Firewall rules updated
+2024-01-15 08:32:45 WARNING Unusual network traffic detected
+2024-01-15 08:33:10 ERROR Access denied for user: anonymous
+2024-01-15 08:34:00 INFO System health check completed
+2024-01-15 08:35:22 CRITICAL Root access attempt from external IP: 45.33.32.156
+2024-01-15 08:36:00 INFO Email notification sent to admin
+2024-01-15 08:37:15 WARNING Failed authentication for service account
+2024-01-15 08:38:00 INFO Log rotation completed
+2024-01-15 08:39:30 ERROR Database query timeout - possible injection attempt
+2024-01-15 08:40:00 INFO Intrusion detection system scan started
+2024-01-15 08:41:12 CRITICAL Unauthorized privilege escalation detected
+2024-01-15 08:42:00 INFO Security incident logged and reported
+2024-01-15 08:43:00 INFO System monitoring active`;
+
+function downloadSampleLog() {
+  const blob = new Blob([SAMPLE_LOG_CONTENT], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'sample-security.log';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 export function LogAnalyzer({ evidenceFiles, logAnalysis, onAnalyze }: LogAnalyzerProps) {
@@ -40,7 +78,18 @@ export function LogAnalyzer({ evidenceFiles, logAnalysis, onAnalyze }: LogAnalyz
           <AlertTriangle className="w-8 h-8 text-muted-foreground" />
         </div>
         <h3 className="text-lg font-semibold mb-2">No Log Files</h3>
-        <p className="text-muted-foreground">Upload .log or .txt files to analyze for suspicious activity</p>
+        <p className="text-muted-foreground mb-4">Upload .log or .txt files to analyze for suspicious activity</p>
+        
+        {/* Sample Log Download */}
+        <div className="cyber-card p-4 rounded-lg max-w-md">
+          <p className="text-sm text-muted-foreground mb-3">
+            Don't have a log file? Download our sample security log to test the analysis feature.
+          </p>
+          <Button onClick={downloadSampleLog} variant="outline" className="cyber-border">
+            <Download className="w-4 h-4 mr-2" />
+            Download Sample Log
+          </Button>
+        </div>
       </div>
     );
   }
