@@ -7,6 +7,7 @@ import { IntegrityCheck } from '@/components/forensics/IntegrityCheck';
 import { LogAnalyzer } from '@/components/forensics/LogAnalyzer';
 import { Timeline } from '@/components/forensics/Timeline';
 import { ReportPreview } from '@/components/forensics/ReportPreview';
+import { HowToUse } from '@/components/forensics/HowToUse';
 import { useForensics } from '@/hooks/useForensics';
 
 export function Dashboard() {
@@ -65,6 +66,8 @@ export function Dashboard() {
             onGenerate={forensics.generateInvestigationReport}
           />
         );
+      case 'guide':
+        return <HowToUse />;
       default:
         return null;
     }
